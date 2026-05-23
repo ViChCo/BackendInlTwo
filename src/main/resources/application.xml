@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+           https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 1: Mock-implementation av CustomerManagementService  -->
+    <bean id="customerService"
+          class="se.yrgo.services.customers.CustomerManagementMockImpl" />
+
+    <!-- 2: DiaryManagementService (mock) -->
+    <bean id="diaryService"
+          class="se.yrgo.services.diary.DiaryManagementServiceMockImpl" />
+
+    <!--  2: CallHandlingService – injicerar de två services ovan  -->
+    <bean id="callHandlingService"
+          class="se.yrgo.services.calls.CallHandlingServiceImpl">
+        <property name="customerService" ref="customerService" />
+        <property name="diaryService"    ref="diaryService"    />
+    </bean>
+
+    <!-- 3: Apache DBCP2 connection pool mot HSQLDB in-memory -->
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="org.hsqldb.jdbc.JDBCDriver" />
+        <property name="url"             value="jdbc:hsqldb:mem:crmdb"       />
+        <property name="username"        value="sa"                          />
+        <property name="password"        value=""                            />
+        <property name="initialSize"     value="2"                           />
+        <property name="maxTotal"        value="10"                          />
+    </bean>
+
+    <!--  3: CustomerDao med JdbcTemplate -->
+    <bean id="customerDao"
+          class="se.yrgo.dataaccess.CustomerDaoJdbcTemplateImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- 3: Produktionsimplementation av CustomerManagementService -->
+    <bean id="customerServiceProduction"
+          class="se.yrgo.services.customers.CustomerManagementServiceProductionImpl">
+        <property name="customerDao" ref="customerDao" />
+    </bean>
+
+</beans>
