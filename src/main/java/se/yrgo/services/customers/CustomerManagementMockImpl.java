@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import se.yrgo.domain.Call;
 import se.yrgo.domain.Customer;
 
+@Service("customerService")
+@Transactional
 public class CustomerManagementMockImpl implements CustomerManagementService {
     private HashMap<String, Customer> customerMap;
 
@@ -17,7 +22,6 @@ public class CustomerManagementMockImpl implements CustomerManagementService {
         customerMap.put("RM210", new Customer("RM210", "River Ltd", "some more notes"));
     }
 
-
     @Override
     public void newCustomer(Customer newCustomer) {
         customerMap.put(newCustomer.getCustomerId(), newCustomer);
@@ -26,14 +30,12 @@ public class CustomerManagementMockImpl implements CustomerManagementService {
     @Override
     public void updateCustomer(Customer changedCustomer) {
         customerMap.put(changedCustomer.getCustomerId(), changedCustomer);
-
     }
 
     @Override
     public void deleteCustomer(Customer oldCustomer) {
         // TODO Auto-generated method stub
         customerMap.remove(oldCustomer.getCustomerId());
-
     }
 
     @Override
@@ -77,6 +79,5 @@ public class CustomerManagementMockImpl implements CustomerManagementService {
 
         //Call the addCall on the customer
         customer.addCall(callDetails);
-
     }
 }

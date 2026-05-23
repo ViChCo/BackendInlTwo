@@ -20,7 +20,7 @@ public class SimpleClient {
     public static void main(String[] args) {
 
         try (ClassPathXmlApplicationContext container =
-                     new ClassPathXmlApplicationContext("application.xml")) {
+                     new ClassPathXmlApplicationContext("application-annotation.xml")) {
 
             // 1: Hämta och skriv ut alla kunder
             System.out.println("=== Alla kunder (Mock) ===");

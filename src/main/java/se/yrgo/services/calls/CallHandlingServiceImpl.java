@@ -1,18 +1,27 @@
 package se.yrgo.services.calls;
+
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import se.yrgo.domain.Action;
 import se.yrgo.domain.Call;
 import se.yrgo.services.customers.CustomerManagementService;
 import se.yrgo.services.customers.CustomerNotFoundException;
 import se.yrgo.services.diary.DiaryManagementService;
 
-
-import java.util.Collection;
-
 //2-1.
 
-public class CallHandlingServiceImpl implements  CallHandlingService {
+@Service("callHandlingService")
+@Transactional
+public class CallHandlingServiceImpl implements CallHandlingService {
 
+    @Autowired
     private CustomerManagementService customerService;
+
+    @Autowired
     private DiaryManagementService diaryService;
 
     public void setCustomerService(CustomerManagementService customerService) {
@@ -40,10 +49,8 @@ public class CallHandlingServiceImpl implements  CallHandlingService {
             throws CustomerNotFoundException {
         customerService.recordCall(customerId, newCall);
 
-        for ( Action action : actions) {
+        for (Action action : actions) {
             diaryService.recordAction(action);
         }
-
-        }
     }
-
+}

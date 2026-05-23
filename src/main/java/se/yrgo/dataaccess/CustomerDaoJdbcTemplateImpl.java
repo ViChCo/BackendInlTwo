@@ -6,17 +6,21 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import se.yrgo.domain.Call;
 import se.yrgo.domain.Customer;
 
+@Repository("customerDao")
 public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
 
     private JdbcTemplate template;
 
     // Spring injicerar DataSource via denna setter
+    @Autowired
     public void setDataSource(DataSource dataSource) {
         this.template = new JdbcTemplate(dataSource);
         createTables();
@@ -24,7 +28,7 @@ public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
 
     /**
      * Skapar tabellerna customer och customer_call.
-     * OBS: "CALL" är ett reserverat ord i HSQLDB – tabellen heter customer_call.
+     * "CALL" är ett ord i HSQLDB – tabellen heter customer_call.
      */
     public void createTables() {
         try {
