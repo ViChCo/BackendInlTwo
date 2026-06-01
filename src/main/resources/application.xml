@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-        <beans xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
            https://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- 1: Mock-implementation av CustomerManagementService  -->
@@ -31,10 +31,16 @@
         <property name="maxTotal"        value="10"                          />
     </bean>
 
+    <!--  3: JdbcTemplate som egen bean -->
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
     <!--  3: CustomerDao med JdbcTemplate -->
     <bean id="customerDao"
           class="se.yrgo.dataaccess.CustomerDaoJdbcTemplateImpl">
-        <property name="dataSource" ref="dataSource" />
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
 
     <!-- 3: Produktionsimplementation av CustomerManagementService -->
